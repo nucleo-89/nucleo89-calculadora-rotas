@@ -2,6 +2,12 @@
 
 **Tecnologia prática para quem vive a estrada.**
 
+## 📸 Conheça a calculadora
+
+![NÚCLEO 89 — Calculadora Operacional de Rotas](calculadora-rota.png)
+
+A interface reúne o preenchimento dos dados operacionais da rota e o Painel de Ganhos, facilitando o acompanhamento de custos, produtividade e resultados.
+
 Uma ferramenta gratuita para entregadores que querem entender melhor os custos, acompanhar a produtividade e descobrir quanto realmente sobra depois das despesas de cada rota.
 
 [**Acessar o projeto no GitHub**](https://github.com/nucleo-89/nucleo89-calculadora-rotas)
