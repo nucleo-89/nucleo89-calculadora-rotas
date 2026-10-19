@@ -4,7 +4,9 @@
 
 ## 📸 Conheça a calculadora
 
-![NÚCLEO 89 — Calculadora Operacional de Rotas](calculadora-rota.png)![NÚCLEO 89 — Calculadora Operacional de Rotas](calculadora-rota2.png)
+![NÚCLEO 89 — Calculadora Operacional de Rotas](calculadora-rota.png)
+
+![Painel de Ganhos](calculadora-rota2.png)
 
 A interface reúne o preenchimento dos dados operacionais da rota e o Painel de Ganhos, facilitando o acompanhamento de custos, produtividade e resultados.
 
