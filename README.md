@@ -67,7 +67,7 @@ Você não precisa saber programar, instalar um servidor ou configurar um banco 
 1. Acesse o [repositório oficial no GitHub](https://github.com/nucleo-89/nucleo89-calculadora-rotas).
 2. Abra o arquivo da calculadora na pasta `nucleo89_calculadora_painel_ganhos_v4`.
 3. Na página do arquivo, clique em **Raw** ou em **Download raw file**, quando disponível, para obter o arquivo.
-4. Ou [Baixe o arquivo diretamente](https://github.com/nucleo-89/nucleo89-calculadora-rotas/releases/download/4.0/nucleo89_calculadora_painel_ganhos_abas_v4.html)
+4. Ou [Baixe o arquivo diretamente](https://github.com/nucleo-89/nucleo89-calculadora-rotas/releases/download/4.0/nucleo89_calculadora_painel_ganhos_abas_v4_nova_rota.html)
 
 ### 2. Abra no navegador
 
