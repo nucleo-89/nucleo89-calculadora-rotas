@@ -1,0 +1,262 @@
+<!doctype html>
+<!--
+  NÚCLEO 89 — CALCULADORA OPERACIONAL v4
+  Desenvolvido por: NÚCLEO 89
+  Projeto de código aberto (Open Source), disponibilizado sob a licença MIT.
+
+  Você pode usar, copiar, estudar, modificar e redistribuir este código conforme
+  os termos da licença MIT. O texto completo está no arquivo LICENSE.txt.
+
+  IMPORTANTE: a licença do código não concede autorização automática para usar
+  a marca, o nome, o logotipo ou outros elementos de identidade visual NÚCLEO 89.
+  Esses elementos de marca permanecem reservados aos seus titulares.
+
+  A calculadora fornece estimativas operacionais e não substitui contabilidade,
+  orientação tributária ou conferência dos dados reais da rota.
+-->
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#0b1110"><meta name="description" content="Calculadora operacional de rotas de entrega NÚCLEO 89."><link rel="manifest" href="./manifest.json"><link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png"><link rel="apple-touch-icon" href="./icons/icon-192.png"><title>NÚCLEO 89 — Calculadora Operacional v4</title>
+<style>
+/*
+ * ESTILOS DA INTERFACE
+ * Paleta escura verde/azul da identidade NÚCLEO 89.
+ * As regras responsivas adaptam os formulários para telas pequenas;
+ * as regras de impressão simplificam a aparência para salvar em PDF.
+ */
+:root{color-scheme:dark;--bg:#0b1110;--panel:#131d1a;--panel2:#1b2924;--line:#2a4038;--text:#eef6f0;--muted:#a6b8ad;--green:#69d49a;--amber:#f3c969;--red:#ff8b82}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#14271e 0%,var(--bg) 55%);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}main{width:min(1100px,100%);margin:auto;padding:22px 15px 40px}.brand{color:var(--green);letter-spacing:.14em;font-size:.76rem;font-weight:800}h1{font-size:clamp(1.65rem,5vw,2.4rem);line-height:1.15;margin:6px 0}.subtitle,.note,.hint{color:var(--muted)}.subtitle{max-width:850px;margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.panel{background:rgba(19,29,26,.97);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}.panel h2{font-size:1.05rem;margin:0 0 14px}.field{margin-bottom:12px}.field:last-child{margin-bottom:0}label{display:block;font-weight:650;margin-bottom:5px}.hint{font-size:.78rem;margin-top:3px}input,select,textarea{width:100%;background:#0d1712;color:var(--text);border:1px solid #385447;border-radius:9px;padding:10px 11px;font:inherit;font-variant-numeric:tabular-nums}textarea{min-height:74px;resize:vertical}.unit{font-size:.8rem;color:var(--muted);font-weight:400}.results{margin-top:14px}.big{background:linear-gradient(135deg,#173d2b,#12231b);border-color:#2e694a}.result-label{color:#c5d9cc;font-size:.9rem}.result-number{font-size:clamp(1.9rem,6vw,2.7rem);color:var(--green);font-weight:850;letter-spacing:-.04em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}.mini{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:13px;min-width:0}.mini strong{display:block;font-size:1.2rem;margin-top:4px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}button{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--panel2);color:var(--text);font:inherit;font-weight:700;cursor:pointer}button.primary{background:var(--green);color:#082013;border-color:var(--green)}button:hover{filter:brightness(1.08)}.formula{color:var(--amber);font-family:ui-monospace,Consolas,monospace;overflow-wrap:anywhere;margin-top:12px}.negative{color:var(--red)!important}.note{font-size:.86rem}.cost-list{display:grid;grid-template-columns:1fr auto;gap:7px 14px}.cost-list div:nth-child(even){text-align:right;font-variant-numeric:tabular-nums}footer{color:var(--muted);font-size:.8rem;margin-top:22px}.section-wide{margin-top:14px}.pill{display:inline-block;color:var(--green);border:1px solid var(--line);border-radius:99px;padding:2px 8px;font-size:.75rem}.tabbar{display:flex;gap:10px;margin:18px 0;flex-wrap:wrap}.tabbar button{flex:1;min-width:180px;padding:13px 16px}.tabbar button[aria-selected="true"]{background:var(--green);color:#082013;border-color:var(--green)}[hidden]{display:none!important}@media(max-width:700px){.grid{grid-template-columns:1fr}.result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}main{padding-top:16px}.panel{padding:15px}}@media print{body{background:white;color:#111}:root{color-scheme:light;--panel:#fff;--panel2:#f4f4f4;--line:#ccc;--text:#111;--muted:#555;--green:#176b3a}.panel,.big{background:white;border-color:#aaa}.actions{display:none}input,select,textarea{border:0;background:white;color:#111;padding:2px 0}.grid{grid-template-columns:1fr 1fr}.result-number{color:#176b3a}}
+</style></head><body><main>
+<header><div class="brand">NÚCLEO 89 · TRANSPORTES & LOGÍSTICA</div><h1>Calculadora de custo operacional</h1><div class="subtitle">Versão 4 — registro completo da rota, desempenho das entregas e custo real do veículo. Preencha as quantidades para que o resumo exportado também sirva como relatório operacional.</div></header>
+<nav class="tabbar" role="tablist" aria-label="Seções da NÚCLEO 89">
+<button type="button" id="tabCalculator" class="primary" role="tab" aria-controls="calculatorTab" aria-selected="true">🧮 Calculadora Operacional</button>
+<button type="button" id="tabEarnings" role="tab" aria-controls="earningsTab" aria-selected="false">📊 Painel de Ganhos</button>
+</nav>
+<div id="calculatorTab" role="tabpanel" aria-labelledby="tabCalculator">
+<div class="grid">
+<section class="panel"><h2>1. Identificação da rota</h2>
+<div class="field"><label for="date">Data da rota</label><input id="date" type="date"></div>
+<div class="field"><label for="platform">Plataforma / empresa</label><input id="platform" value="Mercado Envios Extra" placeholder="Ex.: Mercado Envios Extra"></div>
+<div class="field"><label for="routeId">Identificação / código da rota</label><input id="routeId" placeholder="Código ou nome da rota"></div>
+<div class="field"><label for="driver">Motorista</label><input id="driver" placeholder="Nome (opcional)"></div>
+<div class="field"><label for="vehicle">Veículo</label><input id="vehicle" value="Chevrolet Celta 1.0 VHC 2005"></div>
+<div class="field"><label for="notes">Observações gerais</label><textarea id="notes" placeholder="Chuva, trânsito, problema no app, ocorrência, etc."></textarea></div>
+</section>
+<section class="panel"><h2>2. Distância, tempo e pagamento</h2>
+<div class="field"><label for="odoStart">Hodômetro inicial (km)</label><input id="odoStart" type="number" min="0" step="0.1" placeholder="Opcional"></div>
+<div class="field"><label for="odoEnd">Hodômetro final (km)</label><input id="odoEnd" type="number" min="0" step="0.1" placeholder="Opcional"></div>
+<div class="field"><label for="km">Distância total rodada (km)</label><input id="km" type="number" min="0" step="0.1" value="50"><div class="hint">Se informar os dois hodômetros e o final for maior, a distância será calculada automaticamente.</div></div>
+<div class="field"><label for="hours">Tempo total da rota (horas)</label><input id="hours" type="number" min="0" step="0.1" value="4"></div>
+<div class="field"><label for="idleHours">Motor ligado com veículo parado (horas)</label><input id="idleHours" type="number" min="0" step="0.1" value="1.5"></div>
+<div class="field"><label for="pay">Remuneração bruta da rota (R$)</label><input id="pay" type="number" min="0" step="0.01" value="125"></div>
+<div class="field"><label for="bonus">Bônus / adicionais recebidos (R$)</label><input id="bonus" type="number" min="0" step="0.01" value="0"></div>
+<div class="field"><label for="extras">Pedágio, estacionamento e outros gastos (R$)</label><input id="extras" type="number" min="0" step="0.01" value="0"></div>
+</section>
+<section class="panel"><h2>3. Entregas e produtividade</h2>
+<div class="field"><label for="stops">Quantidade de paradas previstas</label><input id="stops" type="number" min="0" step="1" value="0"></div>
+<div class="field"><label for="packages">Quantidade de pacotes atribuídos à rota</label><input id="packages" type="number" min="0" step="1" value="0"></div>
+<div class="field"><label for="delivered">Pacotes entregues com sucesso</label><input id="delivered" type="number" min="0" step="1" value="0"></div>
+<div class="field"><label for="failed">Insucessos / entregas não concluídas</label><input id="failed" type="number" min="0" step="1" value="0"></div>
+<div class="field"><label for="returns">Pacotes devolvidos / retornados ao ponto</label><input id="returns" type="number" min="0" step="1" value="0"></div>
+<div class="field"><label for="attempts">Tentativas de entrega</label><input id="attempts" type="number" min="0" step="1" value="0"></div>
+<div class="field"><label for="collections">Coletas / retiradas realizadas</label><input id="collections" type="number" min="0" step="1" value="0"></div>
+<div class="field"><label for="issues">Ocorrências registradas</label><input id="issues" type="number" min="0" step="1" value="0"><div class="hint">Ex.: endereço incorreto, cliente ausente, pacote danificado, bloqueio de acesso. Detalhe nas observações.</div></div>
+<div class="field"><label for="actualStops">Paradas efetivamente realizadas</label><input id="actualStops" type="number" min="0" step="1" value="0"><div class="hint">Informe os destinos atendidos/tentados, conforme o critério que você usar em todas as rotas.</div></div>
+<div class="field"><label for="extraStops">Paradas extras / não previstas</label><input id="extraStops" type="number" min="0" step="1" value="0"></div>
+</section>
+<section class="panel"><h2>4. Combustível</h2>
+<div class="field"><label for="fuelPrice">Preço pago por litro (R$/L)</label><input id="fuelPrice" type="number" min="0" step="0.01" value="4.00"></div>
+<div class="field"><label for="kmPerL">Consumo rodando (km/L)</label><input id="kmPerL" type="number" min="0.1" step="0.1" value="10"></div>
+<div class="field"><label for="idleRate">Consumo em marcha lenta (L/h)</label><input id="idleRate" type="number" min="0" step="0.05" value="0.7"></div>
+<div class="field"><label for="fuelOther">Outros gastos com combustível (R$)</label><input id="fuelOther" type="number" min="0" step="0.01" value="0"><div class="hint">Use apenas se houver um gasto real adicional não capturado pela estimativa por km e marcha lenta; evite duplicar combustível.</div></div>
+<div class="field"><label for="fuelActual">Gasto real de combustível na rota (R$) <span class="unit">opcional</span></label><input id="fuelActual" type="number" min="0" step="0.01" placeholder="Se souber, para comparar"><div class="hint">Preencha apenas quando tiver uma estimativa confiável do gasto real atribuível à rota. Não é somado novamente aos custos.</div></div>
+</section>
+<section class="panel"><h2>5. Desgaste e custos do veículo</h2><p class="note">Valores por km são provisões editáveis. Não inclua combustível novamente aqui.</p>
+<div class="field"><label for="maintenance">Manutenção e reparos (R$/km)</label><input id="maintenance" type="number" min="0" step="0.01" value="0.20"></div>
+<div class="field"><label for="tires">Pneus e alinhamento (R$/km)</label><input id="tires" type="number" min="0" step="0.01" value="0.08"></div>
+<div class="field"><label for="depreciation">Depreciação / reserva para troca (R$/km)</label><input id="depreciation" type="number" min="0" step="0.01" value="0.15"></div>
+<div class="field"><label for="otherKm">Outros custos variáveis (R$/km)</label><input id="otherKm" type="number" min="0" step="0.01" value="0.03"></div>
+<div class="field"><label for="fixed">Custos fixos rateados nesta rota (R$)</label><input id="fixed" type="number" min="0" step="0.01" value="0"><div class="hint">Ex.: parcela de seguro, licenciamento ou despesas fixas proporcionalmente atribuídas.</div></div>
+<div class="field"><label for="workExpenses">Alimentação, telefone e outras despesas de trabalho (R$)</label><input id="workExpenses" type="number" min="0" step="0.01" value="0"></div>
+<div class="field"><label for="social">INSS / impostos / contribuições atribuídos à rota (R$)</label><input id="social" type="number" min="0" step="0.01" value="0"><div class="hint">Informe somente a parcela que deseja atribuir a esta rota; não estima automaticamente a obrigação legal.</div></div>
+</section>
+<section class="panel"><h2>6. Detalhes para relatório</h2>
+<div class="field"><label for="startTime">Horário de início</label><input id="startTime" type="time"></div>
+<div class="field"><label for="endTime">Horário de término</label><input id="endTime" type="time"></div>
+<div class="field"><label for="weather">Condição / contexto da rota</label><select id="weather"><option value="Não informado">Não informado</option><option>Normal</option><option>Chuva</option><option>Trânsito intenso</option><option>Chuva e trânsito intenso</option><option>Problemas no veículo</option><option>Problemas no aplicativo</option><option>Outro</option></select></div>
+<div class="field"><label for="incidentDetails">Detalhes dos insucessos / ocorrências</label><textarea id="incidentDetails" placeholder="Ex.: 2 clientes ausentes; 1 endereço não localizado; pacote retornado."></textarea></div>
+<div class="field"><label for="otherInfo">Informações adicionais</label><textarea id="otherInfo" placeholder="Informações que você queira guardar no relatório exportado."></textarea></div>
+<p class="note">O relatório inclui os dados operacionais, cálculos financeiros, indicadores por pacote/parada e observações.</p></section>
+</div>
+<section class="panel big results"><div class="result-label">Resultado estimado após os custos informados</div><div class="result-number" id="net">R$ 0,00</div><div class="result-grid">
+<div class="mini"><div class="result-label">Custo total da rota</div><strong id="total">R$ 0,00</strong></div><div class="mini"><div class="result-label">Combustível estimado</div><strong id="fuelTotal">R$ 0,00</strong></div><div class="mini"><div class="result-label">Custo por km</div><strong id="perKm">R$ 0,00/km</strong></div><div class="mini"><div class="result-label">Resultado líquido por hora</div><strong id="perHour">R$ 0,00/h</strong></div><div class="mini"><div class="result-label">Litros estimados</div><strong id="liters">0,00 L</strong></div><div class="mini"><div class="result-label">Custo por pacote atribuído</div><strong id="perPackage">—</strong></div><div class="mini"><div class="result-label">Pacotes entregues por hora</div><strong id="packagesHour">—</strong></div><div class="mini"><div class="result-label">Taxa de sucesso dos pacotes</div><strong id="successRate">—</strong></div><div class="mini"><div class="result-label">Custo por parada prevista</div><strong id="perStop">—</strong></div><div class="mini"><div class="result-label">Paradas por hora</div><strong id="stopsHour">—</strong></div><div class="mini"><div class="result-label">Percentual da receita consumido</div><strong id="costPct">0,0%</strong></div><div class="mini"><div class="result-label">Resultado por pacote entregue</div><strong id="netPerDelivered">—</strong></div>
+</div><p class="note" id="interpretation"></p><div id="warnings" class="note" role="status" aria-live="polite"></div><section class="panel section-wide"><h2>Histórico local de rotas</h2><p class="note">Salve cada rota neste navegador. O histórico fica neste dispositivo/perfil e não é enviado a servidor algum. Exporte um backup JSON para não depender apenas do armazenamento do navegador.</p><div class="field"><label for="historySelect">Rotas salvas</label><select id="historySelect"><option value="">Nenhuma rota selecionada</option></select></div><div class="actions"><button class="primary" id="newRouteBtn">+ Nova rota</button><button class="primary" id="saveRoute">Salvar rota no histórico</button><button id="loadRoute">Carregar selecionada</button><button id="deleteRoute">Excluir selecionada</button><button id="backupBtn">Exportar backup JSON</button><button id="importBtn">Importar backup JSON</button><input id="importFile" type="file" accept="application/json,.json" hidden></div><p class="note" id="historyStatus" aria-live="polite"></p></section><div class="actions"><button class="primary" id="exportCsv">Exportar relatório CSV</button><button id="exportTxt">Exportar relatório TXT</button><button id="copyBtn">Copiar resumo</button><button id="printBtn">Imprimir / salvar PDF</button><button id="resetBtn">Restaurar exemplos</button></div></section>
+<section class="panel section-wide"><h2>Como usar os indicadores</h2><ul><li>“Pacotes atribuídos” é o volume recebido para a rota; “entregues” e “insucessos” registram o resultado final. O sistema não presume que a soma desses campos sempre será igual ao total, pois pode haver novas tentativas, devoluções e divergências de registro.</li><li>“Paradas previstas” conta destinos planejados. “Paradas realizadas” registra os destinos atendidos/tentados conforme o critério adotado; mantenha o mesmo critério para comparar rotas.</li><li>O custo por pacote atribuído usa todos os pacotes informados; o resultado por pacote entregue divide o saldo pelos entregues com sucesso. A taxa de entrega não é limitada artificialmente: divergências acima de 100% são sinalizadas para conferência.</li><li>O resultado é uma estimativa operacional, não lucro contábil ou cálculo de obrigações tributárias. Só são considerados os custos que você preencher.</li></ul></section>
+</div>
+<div id="earningsTab" role="tabpanel" aria-labelledby="tabEarnings" hidden>
+<section class="panel section-wide" id="earningsPanel">
+<h2>7. Painel de Ganhos do Entregador · NÚCLEO 89</h2>
+<p class="note">Resumo calculado a partir das rotas salvas no histórico local deste navegador. Para uma rota aparecer aqui, primeiro use “Salvar rota no histórico”. Nenhum dado é enviado a servidor externo.</p>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(210px,1fr));margin-bottom:12px">
+  <div class="field"><label for="earningsMonth">Período mensal</label><input id="earningsMonth" type="month"></div>
+  <div class="field" style="display:flex;align-items:end"><label style="display:flex;gap:9px;align-items:center;margin-bottom:10px;font-weight:600"><input id="earningsAll" type="checkbox" style="width:auto"> Considerar todo o histórico</label></div>
+</div>
+<div class="result-grid" id="earningsMetrics">
+  <div class="mini"><div class="result-label">Receita bruta</div><strong id="earnGross">R$ 0,00</strong></div>
+  <div class="mini"><div class="result-label">Custos registrados</div><strong id="earnCosts">R$ 0,00</strong></div>
+  <div class="mini"><div class="result-label">Saldo após custos</div><strong id="earnNet">R$ 0,00</strong></div>
+  <div class="mini"><div class="result-label">Distância registrada</div><strong id="earnKm">0,0 km</strong></div>
+  <div class="mini"><div class="result-label">Horas de rota</div><strong id="earnHours">0,0 h</strong></div>
+  <div class="mini"><div class="result-label">Entregas concluídas</div><strong id="earnDelivered">0</strong></div>
+  <div class="mini"><div class="result-label">Saldo médio por hora</div><strong id="earnPerHour">—</strong></div>
+  <div class="mini"><div class="result-label">Saldo médio por km</div><strong id="earnPerKm">—</strong></div>
+</div>
+<div class="panel section-wide"><h2>Rotas incluídas no resumo</h2><p id="earningsStatus" class="note" aria-live="polite">Carregando histórico…</p>
+<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;min-width:520px"><thead><tr><th style="text-align:left;padding:8px;border-bottom:1px solid var(--line)">Data / rota</th><th style="text-align:right;padding:8px;border-bottom:1px solid var(--line)">Receita</th><th style="text-align:right;padding:8px;border-bottom:1px solid var(--line)">Custos</th><th style="text-align:right;padding:8px;border-bottom:1px solid var(--line)">Saldo</th><th style="text-align:right;padding:8px;border-bottom:1px solid var(--line)">Km</th></tr></thead><tbody id="earningsRows"><tr><td colspan="5" class="note" style="padding:8px">Nenhuma rota salva para este período.</td></tr></tbody></table></div></div>
+<div class="actions"><button id="refreshEarnings">Atualizar painel</button><button id="exportEarningsCsv">Exportar resumo do painel (CSV)</button></div>
+<p class="note">Importante: o painel soma somente as rotas existentes no histórico v4 e usa os custos preenchidos em cada registro. Custos fixos, impostos e despesas que não foram cadastrados não são presumidos. O saldo é uma estimativa operacional, não lucro contábil.</p>
+</section>
+
+</div>
+<footer>Calculadora local — funciona sem internet. Dados e histórico ficam no armazenamento deste navegador. Limpar os dados do site ou trocar de navegador/dispositivo pode apagar ou não disponibilizar o histórico; mantenha backups JSON.</footer></main>
+<script>
+/*
+ * LÓGICA DA CALCULADORA
+ * Todo o processamento é feito no navegador. Não há envio dos dados para
+ * servidor externo. O histórico usa o armazenamento local do navegador e pode
+ * ser perdido se os dados do navegador forem apagados; faça backups regulares.
+ *
+ * Licença do código: MIT. Consulte LICENSE.txt.
+ */
+(()=>{
+'use strict';
+// IDs dos campos usados nos cálculos, no histórico e nos relatórios exportados.
+const ids=['date','platform','routeId','driver','vehicle','notes','odoStart','odoEnd','km','hours','idleHours','pay','bonus','extras','stops','packages','delivered','failed','returns','attempts','collections','issues','actualStops','extraStops','fuelPrice','kmPerL','idleRate','fuelOther','fuelActual','maintenance','tires','depreciation','otherKm','fixed','workExpenses','social','startTime','endTime','weather','incidentDetails','otherInfo'];
+// Atalhos utilitários e chave de armazenamento exclusiva do histórico v4.
+const $=id=>document.getElementById(id), STORE='nucleo89_routes_v4';
+const brl=n=>Number.isFinite(n)?n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}):'—';
+const fmt=(n,d=2)=>Number.isFinite(n)?n.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
+const val=id=>{const el=$(id),n=Number(el.value);return el.value!==''&&Number.isFinite(n)&&n>=0?n:0};
+const str=id=>$(id).value.trim();
+const localDate=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+if(!$('date').value)$('date').value=localDate();
+// Lê o histórico local. Se o armazenamento estiver indisponível ou inválido, retorna uma lista vazia.
+function readHistory(){try{const x=JSON.parse(localStorage.getItem(STORE)||'[]');return Array.isArray(x)?x:[]}catch{return []}}
+// Grava o histórico neste perfil de navegador; não cria cópia em nuvem.
+function writeHistory(items){localStorage.setItem(STORE,JSON.stringify(items));}
+// Captura os valores atuais do formulário para salvar ou exportar uma rota.
+function formData(){const data={};ids.forEach(id=>data[id]=$(id).value);data.weather=$('weather').value;return data}
+// Preenche o formulário com uma rota carregada do histórico ou de um backup.
+function applyData(data){ids.forEach(id=>{if(data[id]!==undefined)$(id).value=data[id]});if(data.weather!==undefined)$('weather').value=data.weather;compute()}
+// Calcula a duração a partir dos horários; considera que o término pode ocorrer após a meia-noite.
+function clockDuration(){const a=str('startTime'),b=str('endTime');if(!a||!b)return null;let [ah,am]=a.split(':').map(Number),[bh,bm]=b.split(':').map(Number);let mins=bh*60+bm-(ah*60+am);if(mins<0)mins+=1440;return mins/60}
+// Recalcula custos, saldo e indicadores sempre que os dados do formulário mudam.
+function compute(){
+ let km=val('km');const os=$('odoStart').value,oe=$('odoEnd').value;let odoValid=true;
+ if(os!==''&&oe!==''){if(Number(oe)>=Number(os)){km=Number(oe)-Number(os);$('km').value=String(km)}else odoValid=false;}
+ const hours=val('hours'),idle=val('idleHours'),basePay=val('pay'),bonus=val('bonus'),pay=basePay+bonus,extras=val('extras'),price=val('fuelPrice'),eff=val('kmPerL'),idleRate=val('idleRate');
+ const movingL=eff>0?km/eff:0,idleL=idle*idleRate,movingFuel=movingL*price,idleFuel=idleL*price,fuelCost=movingFuel+idleFuel+val('fuelOther');
+ const maintenance=km*val('maintenance'),tires=km*val('tires'),depreciation=km*val('depreciation'),other=km*val('otherKm'),fixed=val('fixed'),work=val('workExpenses'),social=val('social');
+ const total=fuelCost+maintenance+tires+depreciation+other+fixed+extras+work+social,net=pay-total,perKm=km>0?total/km:0,perHour=hours>0?net/hours:null,pct=pay>0?total/pay*100:null;
+ const packages=val('packages'),delivered=val('delivered'),stops=val('stops'),actualStops=val('actualStops'),attempts=val('attempts'),rate=packages>0?delivered/packages*100:null,realFuel=$('fuelActual').value===''?null:val('fuelActual');
+ $('net').textContent=brl(net);$('net').classList.toggle('negative',net<0);$('total').textContent=brl(total);$('fuelTotal').textContent=brl(fuelCost);$('perKm').textContent=brl(perKm)+'/km';$('perHour').textContent=perHour===null?'—':brl(perHour)+'/h';$('perHour').classList.toggle('negative',perHour!==null&&perHour<0);$('liters').textContent=fmt(movingL+idleL)+' L';$('perPackage').textContent=packages>0?brl(total/packages):'—';$('packagesHour').textContent=hours>0?fmt(delivered/hours):'—';$('successRate').textContent=rate===null?'—':fmt(rate,1)+'%';$('perStop').textContent=stops>0?brl(total/stops):'—';$('stopsHour').textContent=hours>0?fmt(actualStops/hours):'—';$('costPct').textContent=pct===null?'—':fmt(pct,1)+'%';$('netPerDelivered').textContent=delivered>0?brl(net/delivered):'—';
+ const warnings=[];if(!odoValid)warnings.push('Hodômetro final menor que o inicial: confira os valores.');if(idle>hours)warnings.push('O tempo de motor parado excede a duração total da rota.');const duration=clockDuration();if(duration!==null&&Math.abs(duration-hours)>0.26)warnings.push(`Os horários indicam aproximadamente ${fmt(duration)} h; a duração informada é ${fmt(hours)} h. Confira pausas e virada de dia.`);if(delivered>packages&&packages>=0)warnings.push('Entregues acima dos pacotes atribuídos: confira se há entregas de outra rota ou divergência de registro.');if(delivered+val('failed')>packages&&packages>0)warnings.push('Entregues + insucessos superam os pacotes atribuídos; isso pode ocorrer por novas tentativas/definições diferentes, mas vale conferir.');if(attempts<delivered)warnings.push('Tentativas informadas são menores que entregas concluídas. Confira o critério de contagem.');if(eff===0&&km>0)warnings.push('Consumo em km/L está zerado: combustível em movimento não será estimado.');if(realFuel!==null)warnings.push(`Comparação de combustível: estimativa ${brl(fuelCost)}; gasto real informado ${brl(realFuel)} (diferença ${brl(fuelCost-realFuel)}). O gasto real é comparativo e não é somado novamente.`);
+ $('warnings').innerHTML=warnings.length?'<strong>Conferências:</strong><ul>'+warnings.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ul>':'';
+ $('interpretation').textContent=pay===0?'Informe a remuneração da rota e eventuais adicionais para calcular o saldo.':net<0?'Atenção: com os valores informados, a rota dá saldo negativo antes de valorar integralmente seu tempo e despesas não cadastradas.':`Saldo estimado de ${brl(net)} após os custos cadastrados. ${pct===null?'':fmt(pct,1)+'% da receita foi consumida pelos custos informados.'} O resultado depende da qualidade das provisões por km e das despesas preenchidas.`;
+ const fields=[['Data da rota',str('date')],['Plataforma / empresa',str('platform')],['Código da rota',str('routeId')],['Motorista',str('driver')],['Veículo',str('vehicle')],['Hodômetro inicial (km)',os],['Hodômetro final (km)',oe],['Distância total (km)',fmt(km)],['Duração total (h)',fmt(hours)],['Motor ligado parado (h)',fmt(idle)],['Horário início',str('startTime')],['Horário término',str('endTime')],['Condição da rota',str('weather')],['Paradas previstas',val('stops')],['Paradas realizadas',actualStops],['Paradas extras',val('extraStops')],['Pacotes atribuídos',packages],['Pacotes entregues',delivered],['Insucessos',val('failed')],['Pacotes devolvidos / retornados',val('returns')],['Tentativas de entrega',attempts],['Coletas / retiradas',val('collections')],['Ocorrências registradas',val('issues')],['Remuneração bruta',brl(basePay)],['Bônus / adicionais',brl(bonus)],['Receita total considerada',brl(pay)],['Preço combustível (R$/L)',brl(price)],['Consumo rodando (km/L)',fmt(eff)],['Consumo marcha lenta (L/h)',fmt(idleRate)],['Combustível em movimento',brl(movingFuel)],['Combustível em marcha lenta',brl(idleFuel)],['Outros gastos com combustível',brl(val('fuelOther'))],['Gasto real de combustível (comparativo)',realFuel===null?'':brl(realFuel)],['Manutenção / reparos',brl(maintenance)],['Pneus / alinhamento',brl(tires)],['Depreciação / reserva',brl(depreciation)],['Outros custos por km',brl(other)],['Custos fixos rateados',brl(fixed)],['Pedágios / estacionamento / extras',brl(extras)],['Alimentação / telefone / despesas de trabalho',brl(work)],['INSS / impostos / contribuições atribuídos',brl(social)],['Litros estimados totais',fmt(movingL+idleL)+' L'],['Custo total estimado',brl(total)],['Resultado após custos',brl(net)],['Custo por km',brl(perKm)+'/km'],['Resultado líquido por hora',perHour===null?'—':brl(perHour)+'/h'],['Custo por pacote atribuído',packages>0?brl(total/packages):'—'],['Pacotes entregues por hora',hours>0?fmt(delivered/hours):'—'],['Taxa entregues / atribuídos',rate===null?'—':fmt(rate,1)+'%'],['Custo por parada prevista',stops>0?brl(total/stops):'—'],['Paradas realizadas por hora',hours>0?fmt(actualStops/hours):'—'],['Percentual da receita consumido',pct===null?'—':fmt(pct,1)+'%'],['Resultado por pacote entregue',delivered>0?brl(net/delivered):'—'],['Observações gerais',str('notes')],['Detalhes de insucessos / ocorrências',str('incidentDetails')],['Informações adicionais',str('otherInfo')]];
+ return {fields,km,hours,idle,pay,net,total,fuelCost,rate};
+ }
+ // Escapa caracteres especiais antes de inserir texto do usuário em conteúdo HTML.
+ function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+ // Escapa campos CSV e prefixa entradas potencialmente interpretadas como fórmulas em planilhas.
+ function csvEscape(s){let v=String(s??'');if(/^[\s]*[=+@]/.test(v)||/^[\s]*-/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"'}
+ // Cria um arquivo para download local e revoga a URL temporária após o uso.
+ function exportFile(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+ // Gera nomes de arquivo com data e código de rota sanitizado.
+ function filename(ext){const d=str('date')||'rota',code=str('routeId').replace(/[^a-z0-9_-]/gi,'_');return `nucleo89_rota_${d}${code?'_'+code:''}.${ext}`}
+ // Monta um resumo textual com dados operacionais, custos e indicadores calculados.
+ function summary(){const c=compute();return 'NÚCLEO 89 — RELATÓRIO OPERACIONAL DE ROTA\n'+c.fields.map(([k,v])=>`${k}: ${v===''?'Não informado':v}`).join('\n')+'\n\nNota: estimativa baseada nos custos preenchidos; não é cálculo contábil ou tributário.'}
+ // Atualiza a lista de rotas salvas sem inserir os dados do usuário como HTML.
+ function refreshHistory(selectId=''){const sel=$('historySelect'),items=readHistory();sel.innerHTML='<option value="">Nenhuma rota selecionada</option>';items.slice().reverse().forEach(item=>{const o=document.createElement('option');o.value=item.id;o.textContent=`${item.data.date||'Sem data'} — ${item.data.routeId||'Rota sem código'} — ${item.data.platform||'Sem plataforma'}`;sel.appendChild(o)});if(selectId)sel.value=selectId}
+ // Eventos do formulário: mantêm os indicadores atualizados durante o preenchimento.
+ ids.forEach(id=>$(id).addEventListener('input',()=>{if(id==='odoStart'||id==='odoEnd'){const a=$('odoStart').value,b=$('odoEnd').value;if(a!==''&&b!==''&&Number(b)>=Number(a))$('km').value=Number(b)-Number(a)}compute()}));$('weather').addEventListener('change',compute);
+ $('exportCsv').addEventListener('click',()=>{const c=compute(),csv='Campo;Valor\r\n'+c.fields.map(([k,v])=>csvEscape(k)+';'+csvEscape(v===''?'Não informado':v)).join('\r\n');exportFile(filename('csv'),'\ufeff'+csv,'text/csv;charset=utf-8')});
+ $('exportTxt').addEventListener('click',()=>exportFile(filename('txt'),summary(),'text/plain;charset=utf-8'));
+ $('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(summary());$('copyBtn').textContent='Resumo copiado!';setTimeout(()=>$('copyBtn').textContent='Copiar resumo',1600)}catch{const a=document.createElement('textarea');a.value=summary();document.body.appendChild(a);a.select();try{document.execCommand('copy');$('copyBtn').textContent='Resumo copiado!'}catch{$('copyBtn').textContent='Não foi possível copiar'}a.remove();setTimeout(()=>$('copyBtn').textContent='Copiar resumo',1600)}});
+ $('printBtn').addEventListener('click',()=>window.print());
+ $('resetBtn').addEventListener('click',()=>{if(!confirm('Restaurar os campos para os valores de exemplo? Os registros salvos no histórico não serão apagados.'))return;const d={platform:'Mercado Envios Extra',vehicle:'Chevrolet Celta 1.0 VHC 2005',km:50,hours:4,idleHours:1.5,pay:125,bonus:0,extras:0,stops:0,actualStops:0,packages:0,delivered:0,failed:0,returns:0,attempts:0,collections:0,issues:0,extraStops:0,fuelPrice:4,kmPerL:10,idleRate:.7,fuelOther:0,maintenance:.2,tires:.08,depreciation:.15,otherKm:.03,fixed:0,workExpenses:0,social:0};ids.forEach(id=>{if(id in d)$(id).value=d[id];else if(id==='date')$(id).value=localDate();else $(id).value=''});$('weather').value='Não informado';compute()});
+ // Inicia uma nova rota sem alterar o histórico já salvo. Mantém preferências gerais do veículo e custos por km.
+ $('newRouteBtn').addEventListener('click',()=>{
+   if(!confirm('Iniciar uma nova rota? Os campos desta tela serão limpos, mas as rotas salvas no histórico e no Painel de Ganhos serão preservadas.'))return;
+   const keep={platform:$('platform').value,vehicle:$('vehicle').value,fuelPrice:$('fuelPrice').value,kmPerL:$('kmPerL').value,idleRate:$('idleRate').value,maintenance:$('maintenance').value,tires:$('tires').value,depreciation:$('depreciation').value,otherKm:$('otherKm').value,fixed:$('fixed').value};
+   ids.forEach(id=>{$(id).value=''});
+   Object.entries(keep).forEach(([id,value])=>$(id).value=value);
+   $('date').value=localDate();$('weather').value='Não informado';
+   $('historySelect').value='';$('historyStatus').textContent='Nova rota pronta. As rotas salvas foram preservadas.';
+   compute();$('date').focus();
+ });
+ // Ações do histórico: salvar, carregar, excluir e fazer backup/restauração local.
+ $('saveRoute').addEventListener('click',()=>{try{const items=readHistory(),data=formData(),id=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+'_'+Math.random().toString(36).slice(2));items.push({id,savedAt:new Date().toISOString(),data});writeHistory(items);refreshHistory(id);$('historyStatus').textContent='Rota salva neste navegador.'}catch{$('historyStatus').textContent='Não foi possível salvar. O armazenamento pode estar indisponível ou cheio; exporte os dados manualmente.'}});
+ $('loadRoute').addEventListener('click',()=>{const item=readHistory().find(x=>x.id===$('historySelect').value);if(!item){$('historyStatus').textContent='Selecione uma rota salva.';return}if(!confirm('Carregar esta rota substituirá os campos atualmente preenchidos. Continue?'))return;applyData(item.data);$('historyStatus').textContent='Rota carregada.'});
+ $('deleteRoute').addEventListener('click',()=>{const id=$('historySelect').value;if(!id){$('historyStatus').textContent='Selecione uma rota para excluir.';return}if(!confirm('Excluir permanentemente esta rota do histórico local?'))return;try{writeHistory(readHistory().filter(x=>x.id!==id));refreshHistory();$('historyStatus').textContent='Rota excluída do histórico local.'}catch{$('historyStatus').textContent='Não foi possível alterar o histórico.'}});
+ $('backupBtn').addEventListener('click',()=>exportFile(`nucleo89_backup_${localDate()}.json`,JSON.stringify({app:'NÚCLEO 89',version:4,exportedAt:new Date().toISOString(),routes:readHistory()},null,2),'application/json;charset=utf-8'));
+ $('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',async e=>{const file=e.target.files&&e.target.files[0];if(!file)return;try{const obj=JSON.parse(await file.text()),incoming=Array.isArray(obj)?obj:obj.routes;if(!Array.isArray(incoming)||!incoming.every(x=>x&&x.data&&typeof x.data==='object'))throw new Error('Formato inválido');if(!confirm(`Importar ${incoming.length} rota(s)? Os registros com o mesmo ID serão substituídos.`))return;const map=new Map(readHistory().map(x=>[x.id,x]));incoming.forEach((x,i)=>{const id=String(x.id||`import_${Date.now()}_${i}`);map.set(id,{id,savedAt:x.savedAt||new Date().toISOString(),data:x.data})});writeHistory([...map.values()]);refreshHistory();$('historyStatus').textContent=`Backup importado: ${incoming.length} rota(s).`}catch{$('historyStatus').textContent='Não foi possível importar: arquivo inválido ou armazenamento indisponível.'}finally{e.target.value=''}});
+ // Inicializa a lista do histórico e calcula os resultados ao abrir a página.
+ refreshHistory();compute();
+})();
+</script>
+<script>
+/* Painel de Ganhos NÚCLEO 89 — extensão local da Calculadora Operacional v4.
+   Lê o mesmo histórico nucleo89_routes_v4; não altera nem apaga registros existentes. */
+(()=>{'use strict';
+ const $=id=>document.getElementById(id), STORE='nucleo89_routes_v4';
+ const money=n=>Number.isFinite(n)?n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}):'—';
+ const num=(d,k)=>{const n=Number(d&&d[k]);return d&&d[k]!==''&&Number.isFinite(n)&&n>=0?n:0};
+ const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const monthNow=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`};
+ if(!$('earningsMonth').value)$('earningsMonth').value=monthNow();
+ function history(){try{const x=JSON.parse(localStorage.getItem(STORE)||'[]');return Array.isArray(x)?x:[]}catch{return []}}
+ function calc(d){
+  let km=num(d,'km'),a=d.odoStart,b=d.odoEnd;
+  if(a!==''&&a!=null&&b!==''&&b!=null&&Number.isFinite(Number(a))&&Number.isFinite(Number(b))&&Number(b)>=Number(a))km=Number(b)-Number(a);
+  const hours=num(d,'hours'),pay=num(d,'pay')+num(d,'bonus'),price=num(d,'fuelPrice'),eff=num(d,'kmPerL'),idle=num(d,'idleHours'),idleRate=num(d,'idleRate');
+  const fuel=(eff>0?km/eff:0)*price+idle*idleRate*price+num(d,'fuelOther');
+  const costs=fuel+km*num(d,'maintenance')+km*num(d,'tires')+km*num(d,'depreciation')+km*num(d,'otherKm')+num(d,'fixed')+num(d,'extras')+num(d,'workExpenses')+num(d,'social');
+  return {date:String(d.date||''),route:String(d.routeId||'Rota sem código'),platform:String(d.platform||''),pay,costs,net:pay-costs,km,hours,delivered:num(d,'delivered'),savedAt:''};
+ }
+ function render(){
+  const all=history().map(x=>({...calc(x.data||{}),savedAt:x.savedAt||''}));
+  const month=$('earningsMonth').value, showAll=$('earningsAll').checked;
+  const list=all.filter(x=>showAll||String(x.date).slice(0,7)===month).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(b.savedAt||'').localeCompare(a.savedAt||''));
+  const sum=k=>list.reduce((t,x)=>t+x[k],0),gross=sum('pay'),costs=sum('costs'),net=sum('net'),km=sum('km'),hours=sum('hours'),delivered=sum('delivered');
+  $('earnGross').textContent=money(gross);$('earnCosts').textContent=money(costs);$('earnNet').textContent=money(net);$('earnNet').classList.toggle('negative',net<0);
+  $('earnKm').textContent=km.toLocaleString('pt-BR',{maximumFractionDigits:1})+' km';$('earnHours').textContent=hours.toLocaleString('pt-BR',{maximumFractionDigits:1})+' h';$('earnDelivered').textContent=delivered.toLocaleString('pt-BR');
+  $('earnPerHour').textContent=hours>0?money(net/hours)+'/h':'—';$('earnPerKm').textContent=km>0?money(net/km)+'/km':'—';$('earnPerHour').classList.toggle('negative',hours>0&&net/hours<0);$('earnPerKm').classList.toggle('negative',km>0&&net/km<0);
+  $('earningsStatus').textContent=list.length?`${list.length} rota(s) incluída(s) ${showAll?'em todo o histórico':`em ${month||'mês não selecionado'}`}.`:`Nenhuma rota salva encontrada ${showAll?'no histórico':`para ${month||'o mês selecionado'}`}. Salve rotas no histórico da calculadora para alimentar o painel.`;
+  const tbody=$('earningsRows');tbody.replaceChildren();
+  if(!list.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=5;td.className='note';td.style.padding='8px';td.textContent='Nenhuma rota salva para este período.';tr.appendChild(td);tbody.appendChild(tr)}
+  else list.slice(0,30).forEach(x=>{const tr=document.createElement('tr');const vals=[`${x.date||'Sem data'} — ${x.route}`,money(x.pay),money(x.costs),money(x.net),x.km.toLocaleString('pt-BR',{maximumFractionDigits:1})+' km'];vals.forEach((v,i)=>{const td=document.createElement('td');td.textContent=v;td.style.padding='8px';td.style.borderBottom='1px solid var(--line)';if(i>0)td.style.textAlign='right';if(i===3&&x.net<0)td.style.color='var(--red)';tr.appendChild(td)});tbody.appendChild(tr)});
+  if(list.length>30){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=5;td.className='note';td.style.padding='8px';td.textContent='Exibindo as 30 rotas mais recentes; os totais consideram todas as rotas do período.';tr.appendChild(td);tbody.appendChild(tr)}
+  window.__n89EarningsExport=list;
+ }
+ $('refreshEarnings').addEventListener('click',render);$('earningsMonth').addEventListener('change',render);$('earningsAll').addEventListener('change',render);
+ $('exportEarningsCsv').addEventListener('click',()=>{const list=window.__n89EarningsExport||[];const rows=[['Data','Rota','Plataforma','Receita bruta','Custos registrados','Saldo estimado','Km','Horas','Entregues'],...list.map(x=>[x.date,x.route,x.platform,x.pay.toFixed(2),x.costs.toFixed(2),x.net.toFixed(2),x.km,x.hours,x.delivered])];const csv=rows.map(r=>r.map(v=>{let s=String(v??'');if(/^[\s]*[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}).join(';')).join('\\r\\n');const blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`nucleo89_painel_ganhos_${$('earningsAll').checked?'historico':$('earningsMonth').value||'periodo'}.csv`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)});
+ // Atualiza também quando as ações de salvar/importar/excluir da calculadora alterarem o histórico.
+ const origSet=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){const r=origSet.apply(this,arguments);if(k===STORE)queueMicrotask(()=>{try{render()}catch{}});return r};
+ render();
+})();
+</script>
+<script>
+(()=>{
+ const calc=document.getElementById('calculatorTab'),earn=document.getElementById('earningsTab');
+ const bCalc=document.getElementById('tabCalculator'),bEarn=document.getElementById('tabEarnings');
+ function selectTab(which){
+  const showCalc=which==='calculator';
+  calc.hidden=!showCalc; earn.hidden=showCalc;
+  bCalc.setAttribute('aria-selected',String(showCalc)); bEarn.setAttribute('aria-selected',String(!showCalc));
+  bCalc.classList.toggle('primary',showCalc); bEarn.classList.toggle('primary',!showCalc);
+  if(!showCalc){const refresh=document.getElementById('refreshEarnings');if(refresh)refresh.click();}
+ }
+ bCalc.addEventListener('click',()=>selectTab('calculator'));
+ bEarn.addEventListener('click',()=>selectTab('earnings'));
+})();
+</script>
+<script>if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) { window.addEventListener('load', function () { navigator.serviceWorker.register('./service-worker.js').catch(function (err) { console.warn('NÚCLEO 89: falha ao registrar modo offline.', err); }); }); }</script>
+</body></html>
